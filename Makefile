@@ -1,35 +1,30 @@
-# include .env file and export its env vars
-# (-include to ignore error if it does not exist)
 -include .env
 
-all: clean remove install update solc build 
+# Default target
+all: clean install build
 
-# Install proper solc version.
-solc:; nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA solc-static-versions.solc_0_8_10
+# Clean build artifacts
+clean:; forge clean
 
-# Clean the repo
-clean  :; forge clean
+# Remove all dependencies
+remove:; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "chore: remove modules"
 
-# Remove modules
-remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "modules"
+# Install dependencies
+install:; forge install foundry-rs/forge-std && forge install OpenZeppelin/openzeppelin-contracts
 
-# Install the Modules
-install :; 
-	forge install dapphub/ds-test 
-	forge install OpenZeppelin/openzeppelin-contracts
-
-# Update Dependencies
+# Update dependencies
 update:; forge update
 
-# Builds
-build  :; forge clean && forge build --optimize --optimize-runs 1000000
+# Build
+build:; forge build
 
-setup-yarn:
-	yarn 
+# Run tests
+test:; forge test -vv
 
-local-node: setup-yarn 
-	yarn hardhat node 
+# Run tests with gas report
+test-gas:; forge test -vv --gas-report
 
-deploy:
-	forge create StakeContract --private-key ${PRIVATE_KEY} # --rpc-url 
-	
+# Deploy StakeContract (requires PRIVATE_KEY and RPC_URL in .env)
+deploy:; forge create src/StakeContract.sol:StakeContract \
+	--private-key ${PRIVATE_KEY} \
+	--rpc-url ${RPC_URL}

@@ -1,66 +1,56 @@
-## Foundry
+# StakeContract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A beginner-friendly Solidity project for learning how to stake ERC20 tokens on-chain using Foundry.
 
-Foundry consists of:
+## What it does
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+Users can stake any ERC20 token into the contract. Their balance is tracked on-chain via a mapping.
 
-## Documentation
+## Stack
 
-https://book.getfoundry.sh/
+- [Foundry](https://book.getfoundry.sh/) — build, test, deploy
+- [OpenZeppelin](https://docs.openzeppelin.com/contracts) — ERC20 interface
+
+## Setup
+
+```bash
+git clone --recurse-submodules <your-repo-url>
+cd Foundry
+make build
+```
 
 ## Usage
 
-### Build
-
-```shell
-$ forge build
+```bash
+make build        # compile contracts
+make test         # run tests
+make test-gas     # run tests with gas report
 ```
 
-### Test
+## Deploy locally
 
-```shell
-$ forge test
+```bash
+# Terminal 1 — start local blockchain
+yarn hardhat node
+
+# Terminal 2 — deploy
+make deploy
 ```
 
-### Format
+Set your `.env` before deploying:
 
-```shell
-$ forge fmt
+```bash
+PRIVATE_KEY=0xyour_key
+RPC_URL=http://127.0.0.1:8545
 ```
 
-### Gas Snapshots
+## Project structure
 
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```text
+src/
+  StakeContract.sol   # main contract
+test/
+  StakeContract.t.sol # tests
+  mocks/
+    MockERC20.sol     # mock token for testing
 ```
