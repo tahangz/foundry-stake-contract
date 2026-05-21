@@ -14,7 +14,7 @@ Users can stake any ERC20 token into the contract. Their balance is tracked on-c
 ## Setup
 
 ```bash
-git clone --recurse-submodules <your-repo-url>
+git clone --recurse-submodules https://github.com/tahangz/foundry-stake-contract
 cd Foundry
 make build
 ```
